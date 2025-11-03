@@ -234,13 +234,7 @@ def main():
             
             translation = base_mean - crop_mean  # (3,)
             crop_3d_aligned = crop_3d_spatial + translation[np.newaxis, np.newaxis, :]  # (147, 259, 3)
-            
-            # use crop where it has higher confidence
-            use_crop_mask = crop_conf > base_conf
-            
-            # apply mask to each 3D dimension, so either uses crop points or the original base depending on conf
-            for dim in range(3):  # X, Y, Z
-                final_points_3d[h1:h2, w1:w2, dim] = np.where(use_crop_mask, crop_3d_aligned[:, :, dim], base_region_3d[:, :, dim])
+            final_points_3d[h1:h2, w1:w2, :] = crop_3d_aligned
         else:
             print("no valid regions")
     
